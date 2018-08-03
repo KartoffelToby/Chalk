@@ -25,6 +25,7 @@
             CONFIG_ID: 'defaultTheme',
 
             getThemeUrl: function(theme){
+                theme = 'slime';
                 return 'css/chalk-'+theme+'.css';
             }
         };

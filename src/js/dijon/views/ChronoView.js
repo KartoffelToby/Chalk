@@ -24,6 +24,8 @@
             
             STATUS_PLAY: 'play',
             STATUS_PAUSE: 'pause',
+            STATUS_COMMIT: 'commit',
+            ID_CHRONO_COMMENTS: 'chronoComments',
             
             setup: function(){
                 var self = this;
@@ -57,6 +59,11 @@
                     ev.preventDefault();
                     self.hideMessage();
                     self.chronoModel.emptyBuffer('idleBuffer');
+                });
+
+                $chrono.on('click', '#'+this.ID_CHRONO_COMMENTS+' button', function(ev){
+                    ev.preventDefault();
+                    self.changeStatus(self.STATUS_COMMIT,true,"yes");
                 });
 
                 $(document).on('closed.fndtn.reveal', '#chrono', function(){
@@ -113,11 +120,11 @@
             },
             
             play: function(){
-                this.changeStatus(this.STATUS_PLAY);
+                this.changeStatus(this.STATUS_PLAY,true);
             },
             
             pause: function(){
-                this.changeStatus(this.STATUS_PAUSE);
+                this.changeStatus(this.STATUS_PAUSE,true);
             },
             
             reset: function(){
@@ -149,10 +156,9 @@
                 this.reset();
             },
 
-            changeStatus: function(newStatus, notify){
-                console.log('STATUS CHANGE');
-                
-                if(typeof notify === 'undefined')
+            changeStatus: function(newStatus, notify, commit){
+                console.log('STATUS CHANGE',newStatus,notify,commit);
+                if(typeof notify === 'undefined' && typeof commit != 'undefined')
                 {
                     notify = true;
                 }
@@ -162,7 +168,11 @@
                 $activityPlaceholder.find('select').prop('disabled', disableActivity);
                 
                 var notifyEvent = newStatus == this.STATUS_PLAY ? 'Chrono:play' : 'Chrono:pause';
-                
+                if(newStatus == this.STATUS_COMMIT) {
+                    notifyEvent = 'Chrono:commit';
+                    newStatus = 'Chrono:commit';
+                }
+
                 this.updateButton(newStatus);
                 
                 this.status = newStatus;

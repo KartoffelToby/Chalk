@@ -16,6 +16,8 @@
                 
                 this.system.mapHandler('Chrono:play', 'chronoController', 'play', false, true);
                 this.system.mapHandler('Chrono:pause', 'chronoController', 'pause', false, true);
+                this.system.mapHandler('Chrono:commit', 'chronoController', 'commit', false, true);
+
                 this.system.mapHandler('Chrono:stop', 'chronoController', 'stop');
                 this.system.mapHandler('Chrono:error', 'chronoController', 'error');
                 this.system.mapHandler('Chrono:activity:error', 'chronoView', 'activityError');
@@ -32,6 +34,10 @@
             
             pause: function(ev, postTime){
                 this.chronoModel.pause(postTime);
+            },
+
+            commit: function(ev, postTime){
+                this.chronoModel.commit(postTime);
             },
 
             error: function(){

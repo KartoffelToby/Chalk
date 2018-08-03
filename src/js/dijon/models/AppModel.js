@@ -6,7 +6,7 @@
             system:undefined,
             configUtils: undefined,
             CONFIG_ID: 'defaultIdleDuration',
-            DEFAULT_IDLE_TIME: 3,
+            DEFAULT_IDLE_TIME: 20,
             
             getIdleTime: function(callback){
                 var self = this;

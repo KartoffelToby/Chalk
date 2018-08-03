@@ -6,7 +6,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
         var window = chrome.app.window.create('window.html', {
             'outerBounds': {
                 'width': 460,
-                'height': 960
+                'height': 560
             }
         }, createHandler);
         

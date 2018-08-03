@@ -19,7 +19,7 @@
             setup: function(){
                 var self = this;
                 var $chrono = this.chronoView.getChronoDom();
-                
+                /*
                 $chrono.on('click', '#'+this.ID_CHRONO_COMMENTS+' button', function(ev){
                     ev.preventDefault();
                     var $textarea = $chrono.find('#'+self.ID_CHRONO_COMMENTS+' textarea');
@@ -28,6 +28,7 @@
                     self.loaderService.load($chrono.find('#'+self.ID_CHRONO_COMMENTS), 'comment.pending');
                     self.rmCommentModel.send(self.chronoModel.data.id, text);
                 });
+                */
             },
             
             hideFromChrono: function(){

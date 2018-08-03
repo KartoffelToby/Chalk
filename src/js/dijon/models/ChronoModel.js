@@ -11,7 +11,6 @@
             notificationService: undefined,
             errorService: undefined,
             configUtils: undefined,
-            
             time: undefined,
             interval: 1000,
             intervalRef: undefined,
@@ -75,6 +74,24 @@
                         self.update();
                     }, this.interval);
                 }
+            },
+
+            commit: function(postTime,comment) {
+                console.log('MODEL ON COMMIT');
+                if(typeof postTime === 'undefined')
+                {
+                    postTime = true;
+                }
+
+                clearInterval(this.intervalRef);
+                this.intervalRef = null;
+                this.status = this.STATUS_PAUSE;
+                
+                //Save in background
+                if(postTime)
+                {
+                    this.postTime("comment",true);
+                }   
             },
 
             pause: function(postTime){
@@ -182,8 +199,8 @@
                 return result;
             },
 
-            postTime: function(destination){
-                if(typeof(destination) === 'undefined')
+            postTime: function(destination,comment){
+                if(typeof(destination) === 'undefined' || destination === 'comment')
                 {
                     destination = 'saveBuffer';
                 }
@@ -192,12 +209,15 @@
                 this.validateActivity(this.currentActivity);
                 this.system.notify('Chrono:save');
 
-                if(this[destination] > this.MIN_TIME)
+                if(this[destination] > this.MIN_TIME && comment)
                 {
+                    var text = $('#chronoComments textarea').val();
+                    console.log(text);
                     var sendData = {
                         time_entry: {
                             hours: this.time.formatted(this[destination], false),
-                            activity_id: this.currentActivity.id
+                            activity_id: this.currentActivity.id,
+                            comments: text
                         }
                     };
 
@@ -217,6 +237,7 @@
                         self[destination] = 0;
                         self.notificationService.notifySuccess(["chrono.saved", sendData.time_entry.hours+'min']);
                         self.system.notify('Chrono:save:success', sendData);
+                        self.system.notify('Chrono:stop');
                     });
                 }
             },
